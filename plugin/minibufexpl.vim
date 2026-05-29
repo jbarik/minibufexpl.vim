@@ -887,7 +887,9 @@ function! <SID>UpdateExplorer(curBufNum)
     " Now we are in the previous window, let's enter
     " the window current window, this will preserve
     " one-level backwards window movement history.
-    call s:SwitchWindow('w',1,l:currWin)
+    if l:currWin <= winnr('$')
+    	call s:SwitchWindow('w',1,l:currWin)
+    endif
   endif
 
   call <SID>DEBUG('Leaving UpdateExplorer()',10)
