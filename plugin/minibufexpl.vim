@@ -2260,7 +2260,19 @@ function! <SID>MBEDeleteBuffer()
   let l:selBuf = <SID>GetSelectedBuffer()
 
   if l:selBuf != -1
+    " Save cursor line so we can restore it after the buffer list is redrawn
+    let l:savedLine = line('.')
+
     call <SID>DeleteBuffer(0,0,l:selBuf)
+
+    " Restore cursor to the same line, or the last line if the buffer list
+    " shrank past our saved position
+    let l:lastLine = line('$')
+    if l:savedLine > l:lastLine
+    	call cursor(l:lastLine, 1)
+     else
+     	call cursor(l:savedLine, 1)
+     endif
   endif
 
   call <SID>DEBUG('Leaving MBEDeleteBuffer()',10)
